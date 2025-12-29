@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8"><title>My Profile - Thai Labor Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="bg-gray-50">
+    <nav class="bg-blue-900 text-white p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-xl font-bold italic">THAI LABOR HUB</h1>
+            <div class="space-x-4 text-sm">
+                <a href="index.html" class="hover:text-yellow-400">Home</a>
+                <button onclick="logout()" class="text-red-300 font-bold">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto py-12 px-6">
+        <div class="max-w-4xl mx-auto grid md:grid-cols-3 gap-8">
+            <div class="bg-white p-6 rounded-xl shadow-md text-center">
+                <div class="w-24 h-24 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-user text-4xl text-blue-900"></i>
+                </div>
+                <h2 id="display-name" class="text-xl font-bold">Worker Name</h2>
+                <p id="display-nat" class="text-gray-500 text-sm">Nationality</p>
+                <div class="mt-6 border-t pt-4">
+                    <span class="bg-green-100 text-green-700 text-xs font-bold px-3 py-1 rounded-full">ACTIVE STATUS</span>
+                </div>
+            </div>
+
+            <div class="md:col-span-2 space-y-6">
+                <div class="bg-white p-6 rounded-xl shadow-md">
+                    <h3 class="font-bold border-b mb-4 pb-2">Account Details</h3>
+                    <div class="grid grid-cols-2 gap-4 text-sm">
+                        <p class="text-gray-500">Phone Number:</p><p id="display-phone" class="font-bold">--</p>
+                        <p class="text-gray-500">Registered On:</p><p id="display-date" class="font-bold">--</p>
+                        <p class="text-gray-500">E-Work Permit:</p><p class="text-blue-600 font-bold">In Progress</p>
+                    </div>
+                </div>
+                <div class="bg-yellow-50 p-6 rounded-xl border border-yellow-200">
+                    <h3 class="font-bold text-yellow-800"><i class="fas fa-bell mr-2"></i> Notifications</h3>
+                    <p class="text-sm text-yellow-700 mt-2">Your medical checkup is scheduled for next Tuesday at Bangrak Hospital.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const user = JSON.parse(localStorage.getItem('workerUser'));
+        if (!user) window.location.href = 'login.html';
+
+        document.getElementById('display-name').innerText = user.name;
+        document.getElementById('display-nat').innerText = user.nationality;
+        document.getElementById('display-phone').innerText = user.phone;
+        document.getElementById('display-date').innerText = user.regDate;
+
+        function logout() {
+            localStorage.removeItem('workerUser');
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>

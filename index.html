@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Work in Thailand - Support Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        .hero-gradient { background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1562601579-599dec564e06?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80'); background-size: cover; background-position: center; }
+    </style>
+</head>
+<body class="bg-gray-50">
+
+    <nav class="bg-blue-900 text-white p-4 sticky top-0 z-50 shadow-md">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-xl font-bold italic">THAI LABOR HUB</h1>
+            <div id="nav-links" class="space-x-4 text-sm flex items-center">
+                <a href="index.html" class="text-yellow-400 font-bold border-b-2 border-yellow-400">Home</a>
+                <a href="jobs.html" class="hover:text-yellow-400">Find Jobs</a>
+                <a href="login.html" id="login-link" class="hover:text-yellow-400">Login</a>
+                <a href="register.html" id="auth-btn" class="bg-yellow-500 text-blue-900 px-4 py-1.5 rounded-full font-bold hover:bg-white transition">Register</a>
+            </div>
+        </div>
+    </nav>
+
+    <script>
+        // Check if user is logged in
+        const user = JSON.parse(localStorage.getItem('workerUser'));
+        if (user) {
+            document.getElementById('auth-btn').innerText = 'Profile';
+            document.getElementById('auth-btn').href = 'profile.html';
+            document.getElementById('login-link').classList.add('hidden');
+        }
+    </script>
+
+    <header class="hero-gradient text-white py-24 px-6 text-center">
+        <div class="max-w-3xl mx-auto">
+            <h2 class="text-4xl md:text-5xl font-extrabold mb-4">ยินดีต้อนรับสู่ประเทศไทย</h2>
+            <p class="text-xl mb-8 text-gray-200">Starting your career in Thailand? We provide the latest information for legal and safe work registration.</p>
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="register.html" class="bg-yellow-500 hover:bg-yellow-600 text-blue-900 font-bold py-3 px-8 rounded-full transition shadow-lg">Start Registration</a>
+                <a href="jobs.html" class="bg-white hover:bg-gray-100 text-blue-900 font-bold py-3 px-8 rounded-full transition shadow-lg">Browse Job Openings</a>
+            </div>
+        </div>
+    </header>
+
+    <section id="news" class="container mx-auto py-12 px-6">
+        <div class="flex items-center gap-2 mb-8">
+            <div class="h-8 w-2 bg-blue-900"></div>
+            <h3 class="text-3xl font-bold">News & Work Permit Updates</h3>
+        </div>
+        
+        <div class="grid md:grid-cols-3 gap-6">
+            <div class="bg-white rounded-lg shadow-md overflow-hidden border-t-4 border-yellow-500 p-6">
+                <span class="text-xs font-bold text-red-600 uppercase tracking-widest">Urgent</span>
+                <h4 class="text-xl font-bold mt-2">2025 e-Work Permit</h4>
+                <p class="text-gray-600 text-sm mt-3 mb-4">Transition to digital smart cards is mandatory for all MOU workers this year.</p>
+                <a href="#" class="text-blue-700 font-semibold hover:underline">Read more &rarr;</a>
+            </div>
+            <div class="bg-white rounded-lg shadow-md overflow-hidden border-t-4 border-blue-500 p-6">
+                <span class="text-xs font-bold text-blue-600 uppercase tracking-widest">MOU News</span>
+                <h4 class="text-xl font-bold mt-2">Visa Extension Rules</h4>
+                <p class="text-gray-600 text-sm mt-3 mb-4">New guidelines for 4-year MOU extensions have been released by the Department of Employment.</p>
+                <a href="#" class="text-blue-700 font-semibold hover:underline">Read more &rarr;</a>
+            </div>
+            <div class="bg-white rounded-lg shadow-md overflow-hidden border-t-4 border-green-500 p-6">
+                <span class="text-xs font-bold text-green-600 uppercase tracking-widest">Health</span>
+                <h4 class="text-xl font-bold mt-2">Medical Checkups</h4>
+                <p class="text-gray-600 text-sm mt-3 mb-4">Verify your health certificate at participating public hospitals for legal renewal.</p>
+                <a href="#" class="text-blue-700 font-semibold hover:underline">Read more &rarr;</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="guide" class="bg-blue-50 py-16 px-6">
+        <div class="container mx-auto">
+            <h3 class="text-3xl font-bold text-center mb-12 italic text-blue-900">How to Work Legally in 3 Steps</h3>
+            
+            <div class="grid md:grid-cols-3 gap-8 text-center">
+                <div class="p-4">
+                    <div class="text-5xl text-blue-900 mb-4"><i class="fas fa-id-card"></i></div>
+                    <h5 class="text-xl font-bold mb-2">1. Register Online</h5>
+                    <p class="text-gray-600">Apply through the e-Work Permit portal with your employer’s details.</p>
+                </div>
+                <div class="p-4">
+                    <div class="text-5xl text-blue-900 mb-4"><i class="fas fa-hospital-user"></i></div>
+                    <h5 class="text-xl font-bold mb-2">2. Medical Check</h5>
+                    <p class="text-gray-600">Visit a certified hospital for health verification and biometrics.</p>
+                </div>
+                <div class="p-4">
+                    <div class="text-5xl text-blue-900 mb-4"><i class="fas fa-stamp"></i></div>
+                    <h5 class="text-xl font-bold mb-2">3. Stamp & Smart Card</h5>
+                    <p class="text-gray-600">Receive your digital permit and physical smart card at the labor office.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="container mx-auto py-16 px-6">
+        <div class="bg-yellow-50 border-l-8 border-yellow-400 p-8 rounded-r-lg">
+            <h3 class="text-2xl font-bold mb-4 uppercase"><i class="fas fa-shield-alt mr-2 text-yellow-600"></i> Know Your Rights!</h3>
+            <ul class="list-disc ml-6 space-y-2 text-gray-700 font-medium">
+                <li>Your employer CANNOT keep your passport.</li>
+                <li>You are entitled to the same minimum wage as Thai citizens.</li>
+                <li>You have the right to medical treatment under Social Security.</li>
+                <li>You can report unfair treatment to the Labor Hotline 1546.</li>
+            </ul>
+        </div>
+    </section>
+
+    <footer id="contact" class="bg-blue-900 text-white py-12 px-6">
+        <div class="container mx-auto grid md:grid-cols-2 gap-8">
+            <div>
+                <h4 class="text-xl font-bold mb-4 underline decoration-yellow-500">Need Help?</h4>
+                <p class="mb-2"><strong>Labor Hotline:</strong> 1506 (Available 24/7)</p>
+                <p class="mb-2"><strong>Immigration:</strong> 1178</p>
+                <p><strong>Email:</strong> help@labor.go.th</p>
+            </div>
+            <div class="text-right">
+                <p class="text-gray-400 text-sm">&copy; 2025 Thailand Foreign Labor Portal. All Rights Reserved.</p>
+                <p class="text-gray-400 text-sm mt-2">Government Authorized Information Hub</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

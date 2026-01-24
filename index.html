@@ -16,24 +16,18 @@
     <nav class="bg-blue-900 text-white p-4 sticky top-0 z-50 shadow-md">
         <div class="container mx-auto flex justify-between items-center">
             <h1 class="text-xl font-bold italic">THAI LABOR HUB</h1>
-            <div id="nav-links" class="space-x-4 text-sm flex items-center">
+            <div class="space-x-4 text-sm flex items-center">
                 <a href="index.html" class="text-yellow-400 font-bold border-b-2 border-yellow-400">Home</a>
                 <a href="jobs.html" class="hover:text-yellow-400">Find Jobs</a>
+                
                 <a href="login.html" id="login-link" class="hover:text-yellow-400">Login</a>
-                <a href="register.html" id="auth-btn" class="bg-yellow-500 text-blue-900 px-4 py-1.5 rounded-full font-bold hover:bg-white transition">Register</a>
+                
+                <a href="register.html" id="auth-btn" class="bg-yellow-500 text-blue-900 px-4 py-1.5 rounded-full font-bold hover:bg-white transition">
+                    Register
+                </a>
             </div>
         </div>
     </nav>
-
-    <script>
-        // Check if user is logged in
-        const user = JSON.parse(localStorage.getItem('workerUser'));
-        if (user) {
-            document.getElementById('auth-btn').innerText = 'Profile';
-            document.getElementById('auth-btn').href = 'profile.html';
-            document.getElementById('login-link').classList.add('hidden');
-        }
-    </script>
 
     <header class="hero-gradient text-white py-24 px-6 text-center">
         <div class="max-w-3xl mx-auto">
@@ -105,7 +99,7 @@
                 <li>Your employer CANNOT keep your passport.</li>
                 <li>You are entitled to the same minimum wage as Thai citizens.</li>
                 <li>You have the right to medical treatment under Social Security.</li>
-                <li>You can report unfair treatment to the Labor Hotline 1546.</li>
+                <li>You can report unfair treatment to the Labor Hotline 1506.</li>
             </ul>
         </div>
     </section>
@@ -124,5 +118,28 @@
             </div>
         </div>
     </footer>
+
+    <script>
+    // 1. Check if a worker is logged in
+    const loggedInUser = JSON.parse(localStorage.getItem('workerUser'));
+
+    // 2. Find the buttons we want to change
+    // Make sure your Register button has id="auth-btn"
+    // Make sure your Login link has id="login-link"
+    const authBtn = document.getElementById('auth-btn');
+    const loginLink = document.getElementById('login-link');
+
+    if (loggedInUser && authBtn) {
+        // Change "Register" to "Profile"
+        authBtn.innerText = 'Profile';
+        authBtn.href = 'profile.html';
+        authBtn.classList.add('bg-yellow-500'); // Optional: change color to show logged in
+        
+        // Hide the Login link if it exists
+        if (loginLink) {
+            loginLink.style.display = 'none';
+        }
+    }
+</script>
 </body>
 </html>

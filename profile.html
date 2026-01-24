@@ -1,64 +1,130 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-    <meta charset="UTF-8"><title>My Profile - Thai Labor Hub</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - Thai Labor Hub</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body class="bg-gray-50">
-    <nav class="bg-blue-900 text-white p-4">
+    <nav class="bg-blue-900 text-white p-4 shadow-md">
         <div class="container mx-auto flex justify-between items-center">
             <h1 class="text-xl font-bold italic">THAI LABOR HUB</h1>
             <div class="space-x-4 text-sm">
                 <a href="index.html" class="hover:text-yellow-400">Home</a>
-                <button onclick="logout()" class="text-red-300 font-bold">Logout</button>
+                <a href="jobs.html" class="hover:text-yellow-400">Find Jobs</a>
+                <button onclick="logout()" class="text-red-300 font-bold ml-4">Logout</button>
             </div>
         </div>
     </nav>
 
     <main class="container mx-auto py-12 px-6">
         <div class="max-w-4xl mx-auto grid md:grid-cols-3 gap-8">
-            <div class="bg-white p-6 rounded-xl shadow-md text-center">
+            <div class="bg-white p-8 rounded-xl shadow-md text-center h-fit">
                 <div class="w-24 h-24 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <i class="fas fa-user text-4xl text-blue-900"></i>
+                    <i class="fas fa-user-circle text-6xl text-blue-900"></i>
                 </div>
-                <h2 id="display-name" class="text-xl font-bold">Worker Name</h2>
-                <p id="display-nat" class="text-gray-500 text-sm">Nationality</p>
-                <div class="mt-6 border-t pt-4">
-                    <span class="bg-green-100 text-green-700 text-xs font-bold px-3 py-1 rounded-full">ACTIVE STATUS</span>
+                <h2 id="prof-name" class="text-2xl font-bold text-gray-800">Loading...</h2>
+                <p id="prof-nat" class="text-gray-500 mb-4 font-medium uppercase tracking-wide">--</p>
+                <div class="bg-green-100 text-green-700 text-xs font-bold py-2 rounded-lg">
+                    <i class="fas fa-check-circle mr-1"></i> VERIFIED WORKER
                 </div>
             </div>
 
-            <div class="md:col-span-2 space-y-6">
+            <div class="md:col-span-2 space-y-8">
                 <div class="bg-white p-6 rounded-xl shadow-md">
-                    <h3 class="font-bold border-b mb-4 pb-2">Account Details</h3>
-                    <div class="grid grid-cols-2 gap-4 text-sm">
-                        <p class="text-gray-500">Phone Number:</p><p id="display-phone" class="font-bold">--</p>
-                        <p class="text-gray-500">Registered On:</p><p id="display-date" class="font-bold">--</p>
-                        <p class="text-gray-500">E-Work Permit:</p><p class="text-blue-600 font-bold">In Progress</p>
-                    </div>
+                    <h3 class="text-lg font-bold text-blue-900 border-b pb-3 mb-4">Contact Information</h3>
+                    <p class="text-sm text-gray-500">Phone Number:</p>
+                    <p id="prof-phone" class="text-lg font-bold text-gray-800">--</p>
                 </div>
-                <div class="bg-yellow-50 p-6 rounded-xl border border-yellow-200">
-                    <h3 class="font-bold text-yellow-800"><i class="fas fa-bell mr-2"></i> Notifications</h3>
-                    <p class="text-sm text-yellow-700 mt-2">Your medical checkup is scheduled for next Tuesday at Bangrak Hospital.</p>
+
+                <div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-4 italic">My Job Applications</h3>
+                    <div id="apps-container" class="space-y-4">
+                        <p class="text-gray-400 text-sm">Checking your applications...</p>
+                    </div>
                 </div>
             </div>
         </div>
     </main>
 
-    <script>
-        const user = JSON.parse(localStorage.getItem('workerUser'));
-        if (!user) window.location.href = 'login.html';
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+    const SUPABASE_URL = 'https://sagggctrodrqymbzjbem.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_-R2-f75QkYfFcNiGDgQiyQ_bB0zk1nZ'; 
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-        document.getElementById('display-name').innerText = user.name;
-        document.getElementById('display-nat').innerText = user.nationality;
-        document.getElementById('display-phone').innerText = user.phone;
-        document.getElementById('display-date').innerText = user.regDate;
+    // 1. Get user data from localStorage
+    const user = JSON.parse(localStorage.getItem('workerUser'));
 
-        function logout() {
-            localStorage.removeItem('workerUser');
-            window.location.href = 'index.html';
+    // 2. If no user is found, send them back to login
+    if (!user) {
+        window.location.href = 'login.html';
+        fetchMyApps();
+    } else {
+        // 3. Update the UI with the saved data
+        document.getElementById('prof-name').innerText = user.name || "Unknown User";
+        document.getElementById('prof-nat').innerText = user.nationality || "No Nationality";
+        document.getElementById('prof-phone').innerText = user.phone || "No Phone Number";
+        
+        // 4. Load their applications from the database
+        fetchMyApps();
+    }
+
+    async function fetchMyApps() {
+        const container = document.getElementById('apps-container');
+        
+        // 1. Double check we have the worker's ID
+        if (!user || !user.id) {
+            console.error("No user ID found in localStorage");
+            return;
         }
-    </script>
+
+        const { data, error } = await supabaseClient
+            .from('applications')
+            .select(`
+                id,
+                applied_at,
+                jobs ( title, location, salary )
+            `)
+            .eq('worker_id', user.id);
+
+        // 2. Log the results to the console (Press F12 to see this)
+        console.log("My Applications Data:", data);
+
+        if (error) {
+            console.error("Supabase Error:", error.message);
+            container.innerHTML = `<p class="text-red-500 text-xs italic">Error: ${error.message}</p>`;
+            return;
+        }
+
+        if (data && data.length > 0) {
+            container.innerHTML = data.map(app => {
+                // Check if jobs data actually came through
+                const jobTitle = app.jobs ? app.jobs.title : "Job details missing";
+                const jobLoc = app.jobs ? app.jobs.location : "Unknown";
+                
+                return `
+                    <div class="bg-white p-5 rounded-lg border shadow-sm flex justify-between items-center mb-3">
+                        <div>
+                            <h4 class="font-bold text-blue-900">${jobTitle}</h4>
+                            <p class="text-xs text-gray-500">${jobLoc}</p>
+                            <p class="text-[10px] text-gray-400 mt-1">Applied: ${new Date(app.applied_at).toLocaleDateString()}</p>
+                        </div>
+                        <span class="text-xs font-bold text-yellow-600 bg-yellow-50 px-3 py-1 rounded">Pending</span>
+                    </div>
+                `;
+            }).join('');
+        } else {
+            container.innerHTML = `<div class="text-gray-400 text-sm italic py-4">No applications found. Try applying for a job first!</div>`;
+        }
+    }
+
+    function logout() {
+        localStorage.removeItem('workerUser');
+        window.location.href = 'index.html';
+    }
+</script>
 </body>
 </html>

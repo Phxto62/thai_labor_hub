@@ -1,35 +1,86 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-    <meta charset="UTF-8"><title>Register - Thai Labor Hub</title>
+    <meta charset="UTF-8">
+    <title>Register - Thai Labor Hub</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100">
-    <nav class="bg-blue-900 text-white p-4"><div class="container mx-auto flex justify-between items-center"><h1 class="text-xl font-bold italic">THAI LABOR HUB</h1><a href="index.html" class="hover:text-yellow-400">Home</a></div></nav>
+    <nav class="bg-blue-900 text-white p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-xl font-bold italic">THAI LABOR HUB</h1>
+            <a href="index.html" class="hover:text-yellow-400">Home</a>
+        </div>
+    </nav>
 
     <section class="container mx-auto py-16 px-6">
         <div class="max-w-xl mx-auto bg-white rounded-xl shadow-xl overflow-hidden">
-            <div class="bg-blue-900 text-white p-6 text-center"><h3 class="text-2xl font-bold">Register Your Profile</h3></div>
+            <div class="bg-blue-900 text-white p-6 text-center">
+                <h3 class="text-2xl font-bold">Register Your Profile</h3>
+            </div>
             <form id="regForm" class="p-8 space-y-4">
                 <input id="name" type="text" placeholder="Full Name" class="w-full p-3 border rounded-lg" required>
-                <select id="nat" class="w-full p-3 border rounded-lg"><option>Myanmar</option><option>Cambodia</option><option>Laos</option></select>
+                <select id="nat" class="w-full p-3 border rounded-lg">
+                    <option>Myanmar</option>
+                    <option>Cambodia</option>
+                    <option>Laos</option>
+                </select>
                 <input id="phone" type="tel" placeholder="Phone Number" class="w-full p-3 border rounded-lg" required>
+                <input id="password" type="password" placeholder="Create Password" class="w-full p-3 border rounded-lg" required>
                 <button type="submit" class="w-full bg-yellow-500 text-blue-900 font-black py-4 rounded-lg hover:bg-yellow-600 transition">CREATE ACCOUNT</button>
+
+                <p class="text-center mt-6 text-sm">
+                    Already have an account? <a href="login.html" class="text-blue-700 font-bold">Login here</a>
+                </p>
             </form>
         </div>
     </section>
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
     <script>
-        document.getElementById('regForm').onsubmit = (e) => {
+        // 1. Initialize Supabase - RENAMED to supabaseClient to avoid SyntaxError
+        const SUPABASE_URL = 'https://sagggctrodrqymbzjbem.supabase.co';
+        const SUPABASE_KEY = 'sb_publishable_-R2-f75QkYfFcNiGDgQiyQ_bB0zk1nZ';
+        
+        // Use 'supabaseClient' instead of 'supabase'
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        document.getElementById('regForm').onsubmit = async (e) => {
             e.preventDefault();
-            const userData = {
-                name: document.getElementById('name').value,
-                nationality: document.getElementById('nat').value,
-                phone: document.getElementById('phone').value,
-                regDate: new Date().toLocaleDateString()
-            };
-            localStorage.setItem('workerUser', JSON.stringify(userData));
-            window.location.href = 'profile.html';
+
+            const name = document.getElementById('name').value;
+            const nationality = document.getElementById('nat').value;
+            const phone = document.getElementById('phone').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                // 2. Insert data into the 'workers' table
+                const { data, error } = await supabaseClient
+                    .from('workers')
+                    .insert([{ name, nationality, phone, password, status: 'Active' }])
+                    .select();
+
+                if (error) {
+                    alert('Error: ' + error.message);
+                    console.error(error);
+                } else if (data && data.length > 0) {
+                    // Save the worker data including the new database ID
+                    const newUser = { 
+                        id: data[0].id, 
+                        name: data[0].name, 
+                        nationality: data[0].nationality, 
+                        phone: data[0].phone 
+                    };
+                    
+                    localStorage.setItem('workerUser', JSON.stringify(newUser));
+                    alert('Registration Successful!');
+                    window.location.href = 'profile.html';
+                }
+            } catch (err) {
+                alert("An unexpected error occurred. Check the console.");
+                console.error(err);
+            }
         };
     </script>
 </body>

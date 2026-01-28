@@ -27,16 +27,34 @@
                 </div>
                 <h2 id="prof-name" class="text-2xl font-bold text-gray-800">Loading...</h2>
                 <p id="prof-nat" class="text-gray-500 mb-4 font-medium uppercase tracking-wide">--</p>
-                <div class="bg-green-100 text-green-700 text-xs font-bold py-2 rounded-lg">
+                <!-- <div class="bg-green-100 text-green-700 text-xs font-bold py-2 rounded-lg">
                     <i class="fas fa-check-circle mr-1"></i> VERIFIED WORKER
+                </div> -->
+                <div class="bg-yellow-100 text-yellow-700 text-xs font-bold py-2 rounded-lg">
+                    <i class="fas fa-info-circle mr-1"></i> VERIFYING
                 </div>
             </div>
 
             <div class="md:col-span-2 space-y-8">
                 <div class="bg-white p-6 rounded-xl shadow-md">
-                    <h3 class="text-lg font-bold text-blue-900 border-b pb-3 mb-4">Contact Information</h3>
+                    <h3 class="text-lg font-bold text-blue-900 border-b pb-3 mb-4">Personal Information</h3>
+                    
                     <p class="text-sm text-gray-500">Phone Number:</p>
-                    <p id="prof-phone" class="text-lg font-bold text-gray-800">--</p>
+                    <p id="prof-phone" class="text-lg font-bold text-gray-800 mb-4">--</p>
+
+                    <div class="border-t pt-4">
+                        <p class="text-sm text-gray-500 mb-2">Passport / ID Document:</p>
+                        <div id="passport-status" class="mb-3 text-xs font-medium text-orange-600 bg-orange-50 p-2 rounded hidden">
+                            <i class="fas fa-clock mr-1"></i> No document uploaded yet.
+                        </div>
+                        
+                        <input type="file" id="passportInput" class="hidden" accept="image/*,.pdf">
+                        
+                        <button onclick="document.getElementById('passportInput').click()" class="w-full flex items-center justify-center gap-2 bg-gray-100 hover:bg-blue-900 hover:text-white text-gray-700 py-2 px-4 rounded-lg border-2 border-dashed border-gray-300 transition-all text-sm font-bold">
+                            <i class="fas fa-upload"></i>
+                            Upload Passport
+                        </button>
+                    </div>
                 </div>
 
                 <div>

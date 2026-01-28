@@ -120,26 +120,54 @@
     </footer>
 
     <script>
-    // 1. Check if a worker is logged in
-    const loggedInUser = JSON.parse(localStorage.getItem('workerUser'));
+        // 1. Check if a worker is logged in
+        const loggedInUser = JSON.parse(localStorage.getItem('workerUser'));
 
-    // 2. Find the buttons we want to change
-    // Make sure your Register button has id="auth-btn"
-    // Make sure your Login link has id="login-link"
-    const authBtn = document.getElementById('auth-btn');
-    const loginLink = document.getElementById('login-link');
+        // 2. Find the buttons we want to change
+        // Make sure your Register button has id="auth-btn"
+        // Make sure your Login link has id="login-link"
+        const authBtn = document.getElementById('auth-btn');
+        const loginLink = document.getElementById('login-link');
 
-    if (loggedInUser && authBtn) {
-        // Change "Register" to "Profile"
-        authBtn.innerText = 'Profile';
-        authBtn.href = 'profile.html';
-        authBtn.classList.add('bg-yellow-500'); // Optional: change color to show logged in
-        
-        // Hide the Login link if it exists
-        if (loginLink) {
-            loginLink.style.display = 'none';
+        if (loggedInUser && authBtn) {
+            // Change "Register" to "Profile"
+            authBtn.innerText = 'Profile';
+            authBtn.href = 'profile.html';
+            authBtn.classList.add('bg-yellow-500'); // Optional: change color to show logged in
+            
+            // Hide the Login link if it exists
+            if (loginLink) {
+                loginLink.style.display = 'none';
+            }
         }
-    }
-</script>
+    </script>
+
+    <script>
+        function toggleChat() {
+            // For now, we'll just alert. Later, this will open your chat window.
+            alert("Chatbot is coming soon! For urgent help, please contact support.");
+        }
+
+        function showTooltip() {
+            document.getElementById('chat-tooltip').style.opacity = '1';
+        }
+
+        function hideTooltip() {
+            document.getElementById('chat-tooltip').style.opacity = '0';
+        }
+    </script>
+
+    <div class="fixed bottom-6 right-6 z-[9999]">
+        <div id="chat-tooltip" class="absolute bottom-16 right-0 bg-blue-900 text-white text-xs py-2 px-3 rounded-lg shadow-lg opacity-0 transition-opacity duration-300 whitespace-nowrap pointer-events-none">
+            Need help? Chat with us!
+        </div>
+
+        <button onclick="toggleChat()" 
+                onmouseenter="showTooltip()" 
+                onmouseleave="hideTooltip()"
+                class="bg-yellow-500 hover:bg-yellow-400 text-blue-900 w-16 h-16 rounded-full shadow-2xl flex items-center justify-center transition-transform hover:scale-110 active:scale-95 border-4 border-white">
+            <i class="fas fa-comment-dots text-2xl"></i>
+        </button>
+    </div>
 </body>
 </html>
